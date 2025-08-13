@@ -32,8 +32,8 @@ public class DBConnection {
         System.out.println("URL de conexion: " + URL);
         try {
             Connection connection = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-            System.out.println("Catalogo: " + connection.getSchema());
-            System.out.println("Esquema: " + connection.getCatalog());
+            System.out.println("Esquema: " + connection.getSchema());
+            System.out.println("Catalogo: " + connection.getCatalog());
 
         } catch (SQLException e) {
 
