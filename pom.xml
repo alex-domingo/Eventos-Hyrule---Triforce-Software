@@ -13,7 +13,7 @@
     </properties>
 
     <dependencies>
-        <!-- MySQL Connector/J 9.2.0 -->
+        <!-- MySQL Connector/J 9.3.0 -->
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.mysql</groupId>
