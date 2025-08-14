@@ -34,7 +34,7 @@ public class EventosHyrule {
         );
         System.out.println("Crear: " + dao.crear(nuevo));
 
-        // 2) Leer por código
+        // 2) Leer por codigo
         Evento e = dao.obtenerPorCodigo("EVT-00000003");
         System.out.println("Obtener: " + (e != null ? e.getTitulo() : "no encontrado"));
 
