@@ -4,8 +4,9 @@
 package com.hyrule.eventos.hyrule;
 
 import com.hyrule.eventos.hyrule.dbconnection.DBConnection;
-import com.hyrule.eventos.hyrule.dao.ParticipanteDAO;
-import com.hyrule.eventos.hyrule.modelo.Participante;
+import com.hyrule.eventos.hyrule.dao.InscripcionDAO;
+import com.hyrule.eventos.hyrule.modelo.Inscripcion;
+import com.hyrule.eventos.hyrule.servicio.InscripcionService;
 
 /**
  *
@@ -18,29 +19,22 @@ public class EventosHyrule {
         DBConnection connection = new DBConnection();
         connection.connect();
 
-        // DAO
-        ParticipanteDAO pdao = new ParticipanteDAO();
+        // Pruebas inscripcion
+        InscripcionDAO idao = new InscripcionDAO();
 
-        // Pruebas directas a participante
-        Participante p = new Participante(
-                "demo@hyrule.org",
-                "Demo Usuario",
-                "estudiante",
-                "Academia Hyliana"
-        );
+        // Crea una inscripcion pendiente (para un participante y evento existentes)
+        Inscripcion ins = new Inscripcion("zelda@hyrule.edu", "EVT-00000001", "asistente", "pendiente");
+        System.out.println("Crear inscripcion: " + idao.crear(ins));
 
-        System.out.println("Crear participante: " + pdao.crear(p));
+        // Listar por evento
+        System.out.println("Inscripciones EVT-00000001: " + idao.listarPorEvento("EVT-00000001").size());
 
-        Participante p1 = pdao.obtenerPorCorreo("demo@hyrule.org");
-        System.out.println("Obtener participante: " + (p1 != null ? p1.getNombreCompleto() : "no existe"));
+        // Validar (aplica reglas: pagos suficientes + cupo)
+        InscripcionService service = new InscripcionService();
+        System.out.println("Validar inscripcion: " + service.validarInscripcion("zelda@hyrule.edu", "EVT-00000001"));
 
-        p1.setNombreCompleto("Demo Usuario Actualizado");
-        p1.setTipo("profesional");
-        System.out.println("Actualizar participante: " + pdao.actualizar(p1));
-
-        System.out.println("Buscar por nombre LIKE 'Demo': " + pdao.buscarPorNombreLike("Demo").size());
-        System.out.println("Listar participantes: " + pdao.listar().size());
-
-        System.out.println("Eliminar participante: " + pdao.eliminar("demo@hyrule.org"));
+        // Verificar estado
+        Inscripcion ver = idao.obtener("zelda@hyrule.edu", "EVT-00000001");
+        System.out.println("Estado actual: " + (ver != null ? ver.getEstado() : "no existe"));
     }
 }
