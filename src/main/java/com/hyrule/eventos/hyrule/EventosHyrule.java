@@ -19,7 +19,7 @@ public class EventosHyrule {
         DBConnection connection = new DBConnection();
         connection.connect();
 
-        // Pruebas inscripcion
+        // Pruebas de validacion inscripcion
         InscripcionDAO idao = new InscripcionDAO();
 
         // Crea una inscripcion pendiente (para un participante y evento existentes)
