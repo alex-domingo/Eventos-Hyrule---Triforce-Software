@@ -3,10 +3,9 @@
  */
 package com.hyrule.eventos.hyrule;
 
-import com.hyrule.eventos.hyrule.dao.EventoDAO;
 import com.hyrule.eventos.hyrule.dbconnection.DBConnection;
-import com.hyrule.eventos.hyrule.modelo.Evento;
-import java.time.LocalDate;
+import com.hyrule.eventos.hyrule.dao.ParticipanteDAO;
+import com.hyrule.eventos.hyrule.modelo.Participante;
 
 /**
  *
@@ -20,34 +19,28 @@ public class EventosHyrule {
         connection.connect();
 
         // DAO
-        EventoDAO dao = new EventoDAO(connection);
+        ParticipanteDAO pdao = new ParticipanteDAO();
 
-        // 1) Crear un evento de prueba
-        Evento nuevo = new Evento(
-                "EVT-00000003",
-                LocalDate.of(2025, 10, 5),
-                "debate",
-                "Debate sobre reliquias antiguas",
-                "Aula Magna",
-                80,
-                0.00
+        // Pruebas directas a participante
+        Participante p = new Participante(
+                "demo@hyrule.org",
+                "Demo Usuario",
+                "estudiante",
+                "Academia Hyliana"
         );
-        System.out.println("Crear: " + dao.crear(nuevo));
 
-        // 2) Leer por codigo
-        Evento e = dao.obtenerPorCodigo("EVT-00000003");
-        System.out.println("Obtener: " + (e != null ? e.getTitulo() : "no encontrado"));
+        System.out.println("Crear participante: " + pdao.crear(p));
 
-        // 3) Actualizar
-        if (e != null) {
-            e.setTitulo("Debate sobre reliquias antiguas (Actualizado)");
-            System.out.println("Actualizar: " + dao.actualizar(e));
-        }
+        Participante p1 = pdao.obtenerPorCorreo("demo@hyrule.org");
+        System.out.println("Obtener participante: " + (p1 != null ? p1.getNombreCompleto() : "no existe"));
 
-        // 4) Listar
-        System.out.println("Listar total: " + dao.listar().size());
+        p1.setNombreCompleto("Demo Usuario Actualizado");
+        p1.setTipo("profesional");
+        System.out.println("Actualizar participante: " + pdao.actualizar(p1));
 
-        // 5) Eliminar
-        System.out.println("Eliminar: " + dao.eliminar("EVT-00000003"));
+        System.out.println("Buscar por nombre LIKE 'Demo': " + pdao.buscarPorNombreLike("Demo").size());
+        System.out.println("Listar participantes: " + pdao.listar().size());
+
+        System.out.println("Eliminar participante: " + pdao.eliminar("demo@hyrule.org"));
     }
 }
