@@ -4,11 +4,10 @@
 package com.hyrule.eventos.hyrule;
 
 import com.hyrule.eventos.hyrule.dbconnection.DBConnection;
-import com.hyrule.eventos.hyrule.modelo.Actividad;
-import com.hyrule.eventos.hyrule.servicio.ActividadService;
-import com.hyrule.eventos.hyrule.servicio.AsistenciaService;
-
-import java.time.LocalTime;
+import com.hyrule.eventos.hyrule.servicio.ReporteParticipantesService;
+import com.hyrule.eventos.hyrule.servicio.CertificadoService;
+import com.hyrule.eventos.hyrule.servicio.ReporteActividadesService;
+import com.hyrule.eventos.hyrule.servicio.ReporteEventosService;
 
 /**
  *
@@ -22,33 +21,17 @@ public class EventosHyrule {
         DBConnection connection = new DBConnection();
         connection.connect();
 
-        // Funcionalidades para actividad
-        ActividadService aService = new ActividadService();
-        Actividad nueva = new Actividad(
-                "ACT-00000003",
-                "EVT-00000001",
-                "charla",
-                "Charla de arqueria",
-                "link@hyrule.org", // instructor valido en EVT-00000001
-                LocalTime.of(14, 0),
-                LocalTime.of(16, 0),
-                2
-        );
-        System.out.println("Crear actividad validada: " + aService.crearConValidacion(nueva));
+        CertificadoService cs = new CertificadoService();
+        System.out.println("Certificado: " + cs.emitir("malon@hyrule.org", "EVT-00000001").getAbsolutePath());
 
-        // Funcionalidades para asistencia
-        AsistenciaService asistService = new AsistenciaService();
+        var rp = new ReporteParticipantesService();
+        System.out.println(rp.generar("EVT-00000001", "", "").getAbsolutePath());
 
-        // Registramos asistencia de Malon (la inscripcion debe ser validada ya que hay cupo)
-        System.out.println("Asistencia Malon: " + asistService.registrarAsistencia("malon@hyrule.org", "ACT-00000003"));
+        var ra = new ReporteActividadesService();
+        System.out.println(ra.generar("EVT-00000001", "", "").getAbsolutePath());
 
-        // Registramos asistencia de Zelda (la inscripcion debe ser validada ya que hay cupo)
-        System.out.println("Asistencia Zelda: " + asistService.registrarAsistencia("zelda@hyrule.edu", "ACT-00000003"));
+        var re = new ReporteEventosService();
+        System.out.println(re.generarPagosPorEvento("EVT-00000001").getAbsolutePath());
 
-        // Intentamos registrar asistencia duplicada de Malon (debe fallar ya que Malon fue inscrito anteriormente)
-        System.out.println("Asistencia Malon (duplicada): " + asistService.registrarAsistencia("malon@hyrule.org", "ACT-00000003"));
-
-        // Intentamos registrar a un tercero para saturar cupo (deberia fallar en cupo lleno si ya hay 2)
-        System.out.println("Asistencia Link (como asistente): " + asistService.registrarAsistencia("link@hyrule.org", "ACT-00000003"));
     }
 }
