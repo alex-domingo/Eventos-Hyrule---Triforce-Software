@@ -4,12 +4,11 @@
 package com.hyrule.eventos.hyrule;
 
 import com.hyrule.eventos.hyrule.dbconnection.DBConnection;
-import com.hyrule.eventos.hyrule.dao.ParticipanteDAO;
-import com.hyrule.eventos.hyrule.modelo.Participante;
-import com.hyrule.eventos.hyrule.servicio.PagoService;
-import com.hyrule.eventos.hyrule.dao.InscripcionDAO;
-import com.hyrule.eventos.hyrule.modelo.Inscripcion;
-import com.hyrule.eventos.hyrule.servicio.InscripcionService;
+import com.hyrule.eventos.hyrule.modelo.Actividad;
+import com.hyrule.eventos.hyrule.servicio.ActividadService;
+import com.hyrule.eventos.hyrule.servicio.AsistenciaService;
+
+import java.time.LocalTime;
 
 /**
  *
@@ -23,27 +22,33 @@ public class EventosHyrule {
         DBConnection connection = new DBConnection();
         connection.connect();
 
-        // Creamos participante nuevo
-        ParticipanteDAO pdao = new ParticipanteDAO();
-        Participante nuevo = new Participante("malon@hyrule.org", "Malon Ranch", "estudiante", "Lon Lon Ranch");
-        System.out.println("Crear participante (malon): " + pdao.crear(nuevo));
+        // Funcionalidades para actividad
+        ActividadService aService = new ActividadService();
+        Actividad nueva = new Actividad(
+                "ACT-00000003",
+                "EVT-00000001",
+                "charla",
+                "Charla de arqueria",
+                "link@hyrule.org", // instructor valido en EVT-00000001
+                LocalTime.of(14, 0),
+                LocalTime.of(16, 0),
+                2
+        );
+        System.out.println("Crear actividad validada: " + aService.crearConValidacion(nueva));
 
-        // Creamos inscripcion pendiente al evento pago EVT-00000001
-        InscripcionDAO idao = new InscripcionDAO();
-        Inscripcion ins = new Inscripcion("malon@hyrule.org", "EVT-00000001", "asistente", "pendiente");
-        System.out.println("Crear inscripcion (malon): " + idao.crear(ins));
+        // Funcionalidades para asistencia
+        AsistenciaService asistService = new AsistenciaService();
 
-        // Intentamos validar inscripcion sin pagar (debe fallar por pago insuficiente)
-        InscripcionService iservice = new InscripcionService();
-        System.out.println("Validar sin pagar (malon): " + iservice.validarInscripcion("malon@hyrule.org", "EVT-00000001"));
+        // Registramos asistencia de Malon (la inscripcion debe ser validada ya que hay cupo)
+        System.out.println("Asistencia Malon: " + asistService.registrarAsistencia("malon@hyrule.org", "ACT-00000003"));
 
-        // Registramos el pago completo y revalidamos automaticamente la inscripcion
-        PagoService pagoService = new PagoService();
-        System.out.println("Registrar pago + revalidar (malon): "
-                + pagoService.registrarPagoYRevalidar("malon@hyrule.org", "EVT-00000001", "efectivo", 75.00));
+        // Registramos asistencia de Zelda (la inscripcion debe ser validada ya que hay cupo)
+        System.out.println("Asistencia Zelda: " + asistService.registrarAsistencia("zelda@hyrule.edu", "ACT-00000003"));
 
-        // Verificamos el estado final de la inscripcion
-        Inscripcion ver = idao.obtener("malon@hyrule.org", "EVT-00000001");
-        System.out.println("Estado final (malon): " + (ver != null ? ver.getEstado() : "no existe"));
+        // Intentamos registrar asistencia duplicada de Malon (debe fallar ya que Malon fue inscrito anteriormente)
+        System.out.println("Asistencia Malon (duplicada): " + asistService.registrarAsistencia("malon@hyrule.org", "ACT-00000003"));
+
+        // Intentamos registrar a un tercero para saturar cupo (deberia fallar en cupo lleno si ya hay 2)
+        System.out.println("Asistencia Link (como asistente): " + asistService.registrarAsistencia("link@hyrule.org", "ACT-00000003"));
     }
 }
