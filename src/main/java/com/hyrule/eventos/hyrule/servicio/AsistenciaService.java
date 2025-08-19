@@ -20,6 +20,7 @@ public class AsistenciaService {
     private final AsistenciaDAO asistenciaDAO = new AsistenciaDAO();
 
     public boolean registrarAsistencia(String correo, String codigoActividad) {
+        
         // Tratamos de evitar asistencia duplicada
         if (asistenciaDAO.existe(correo, codigoActividad)) {
             System.err.println("Asistencia duplicada.");
@@ -33,7 +34,7 @@ public class AsistenciaService {
             return false;
         }
 
-        // Verificamos si la inscripcion es VALIDADA al evento
+        // Verificamos si la inscripcion es valida al evento
         final String sqlVal = "SELECT estado FROM inscripcion WHERE correo=? AND codigo_evento=? LIMIT 1";
         try (Connection cn = DriverManager.getConnection(DBConnection.URL, DBConnection.USER_NAME, DBConnection.PASSWORD); PreparedStatement ps = cn.prepareStatement(sqlVal)) {
             ps.setString(1, correo);
@@ -53,7 +54,7 @@ public class AsistenciaService {
             return false;
         }
 
-        // Verificamo el cupo de la actividad
+        // Verificamos el cupo de la actividad
         int cupo = actividadDAO.obtenerCupo(codigoActividad);
         int ocupados = actividadDAO.contarAsistencias(codigoActividad);
         if (ocupados >= cupo) {

@@ -21,8 +21,8 @@ public class ReporteEventosService {
     /*
     Reporte general de eventos con: cupo, todas las
     inscripciones validadas, monto total recaudado. Filtros opcionales:
-    tipo_evento (charla,congreso,taller,debate), fecha desde/hasta
-    y rango de cupo (enteros)
+    tipo de evento (charla, congreso, taller o debate), fecha desde/hasta
+    y rango de cupo
      */
     public File generarPagosPorEvento(String codigoEvento) {
         StringBuilder cuerpo = new StringBuilder();

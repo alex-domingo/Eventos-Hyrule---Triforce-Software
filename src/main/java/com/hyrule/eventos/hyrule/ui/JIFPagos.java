@@ -9,6 +9,9 @@ import com.hyrule.eventos.hyrule.servicio.ResultadoPago;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyVetoException;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -74,6 +77,24 @@ public class JIFPagos extends JInternalFrame {
                 JOptionPane.showMessageDialog(this, res.mensaje, "Pago rechazado", JOptionPane.WARNING_MESSAGE);
             }
             txtLog.append(res.toString() + "\n");
+        });
+
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
         });
     }
 

@@ -9,10 +9,13 @@ import com.hyrule.eventos.hyrule.servicio.CertificadoService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -60,6 +63,24 @@ public class JIFCertificados extends JInternalFrame {
         btnUno.addActionListener(e -> emitirUno());
         btnTodos.addActionListener(e -> emitirTodos());
         btnAbrirCarpeta.addActionListener(e -> abrirCarpeta());
+
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+        });
     }
 
     private void emitirUno() {
@@ -109,7 +130,7 @@ public class JIFCertificados extends JInternalFrame {
                 "Emisión masiva", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // Participantes con inscripcion VALIDADA y al menos 1 asistencia en cualquier actividad del evento
+    // Participantes con inscripcion valida y al menos 1 asistencia en cualquier actividad del evento
     private List<String> listarElegibles(String codigoEvento) {
         final String sql = """
             SELECT i.correo
@@ -140,7 +161,7 @@ public class JIFCertificados extends JInternalFrame {
 
     private void abrirCarpeta() {
         try {
-            // Usa la ruta configurada en Configuracion.RUTA_SALIDA
+            // Usamos la ruta configurada en Configuracion.RUTA_SALIDA
             String path = com.hyrule.eventos.hyrule.util.Configuracion.RUTA_SALIDA;
             Desktop.getDesktop().open(new java.io.File(path));
         } catch (Exception ex) {

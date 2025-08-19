@@ -12,9 +12,9 @@ import java.time.LocalDate;
  */
 public class Evento {
 
-    private String codigo;        // PK: EVT-00000001
+    private String codigo; // PK: EVT-00000001
     private LocalDate fechaEvento;
-    private String tipo;          // 'charla','congreso','taller','debate'
+    private String tipo; // Tipo de evento: charla, congreso, taller o debate
     private String titulo;
     private String lugar;
     private int cupo;

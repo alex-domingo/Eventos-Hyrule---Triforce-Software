@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 public class Asistencia {
 
-    private String correo;          // PK (FK participante)
+    private String correo; // PK (FK participante)
     private String codigoActividad; // PK (FK actividad)
     private LocalDateTime asistioEn;
 
@@ -24,6 +24,7 @@ public class Asistencia {
         this.codigoActividad = codigoActividad;
     }
 
+    // Getters y setters
     public String getCorreo() {
         return correo;
     }

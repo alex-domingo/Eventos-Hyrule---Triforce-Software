@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class ActividadDAO {
 
+    // CREATE
     public boolean crear(Actividad a) {
         final String sql = "INSERT INTO actividad (codigo, codigo_evento, tipo, titulo, correo_instructor, hora_inicio, hora_fin, cupo) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -37,6 +38,7 @@ public class ActividadDAO {
         }
     }
 
+    // Obtenemos una actividad desde la base de datos filtrada por su codigo
     public Actividad obtenerPorCodigo(String codigo) {
         final String sql = "SELECT codigo, codigo_evento, tipo, titulo, correo_instructor, hora_inicio, hora_fin, cupo "
                 + "FROM actividad WHERE codigo = ?";
@@ -53,6 +55,7 @@ public class ActividadDAO {
         return null;
     }
 
+    // Listamos todas las actividades asociadas a un evento especifico
     public List<Actividad> listarPorEvento(String codigoEvento) {
         final String sql = "SELECT codigo, codigo_evento, tipo, titulo, correo_instructor, hora_inicio, hora_fin, cupo "
                 + "FROM actividad WHERE codigo_evento=? ORDER BY codigo";
@@ -70,6 +73,7 @@ public class ActividadDAO {
         return lista;
     }
 
+    // Contamos el numero de asistencias registradas para una actividad especifica
     public int contarAsistencias(String codigoActividad) {
         final String sql = "SELECT COUNT(*) FROM asistencia WHERE codigo_actividad=?";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -83,6 +87,7 @@ public class ActividadDAO {
         }
     }
 
+    // Obtenemos el cupo maximo de una actividad especifica
     public int obtenerCupo(String codigoActividad) {
         final String sql = "SELECT cupo FROM actividad WHERE codigo=?";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -96,6 +101,7 @@ public class ActividadDAO {
         }
     }
 
+    // Obtenemos el codigo del evento al que pertenece una actividad
     public String obtenerEventoDeActividad(String codigoActividad) {
         final String sql = "SELECT codigo_evento FROM actividad WHERE codigo=?";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -124,7 +130,12 @@ public class ActividadDAO {
         return a;
     }
 
+    // Utilizamos el metodo DBConnection verificando su conexion anteriormente
     private Connection obtener() throws SQLException {
-        return DriverManager.getConnection(DBConnection.URL, DBConnection.USER_NAME, DBConnection.PASSWORD);
+        // Utilizamos el metodo DBConnection verificando su conexion anteriormente
+        return DriverManager.getConnection(
+                DBConnection.URL,
+                DBConnection.USER_NAME,
+                DBConnection.PASSWORD);
     }
 }

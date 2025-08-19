@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class AsistenciaDAO {
 
+    // CREATE
     public boolean crear(Asistencia a) {
         final String sql = "INSERT INTO asistencia (correo, codigo_actividad) VALUES (?, ?)";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -29,6 +30,7 @@ public class AsistenciaDAO {
         }
     }
 
+    // Verificamos si existe una asistencia registrada para un usuario en una actividad especifica
     public boolean existe(String correo, String codigoActividad) {
         final String sql = "SELECT 1 FROM asistencia WHERE correo=? AND codigo_actividad=? LIMIT 1";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -43,6 +45,7 @@ public class AsistenciaDAO {
         }
     }
 
+    // Listamos todas las asistencias registradas para una actividad especifica
     public List<Asistencia> listarPorActividad(String codigoActividad) {
         final String sql = "SELECT correo, codigo_actividad, asistio_en FROM asistencia WHERE codigo_actividad=? ORDER BY asistio_en";
         List<Asistencia> lista = new ArrayList<>();
@@ -66,7 +69,12 @@ public class AsistenciaDAO {
         return lista;
     }
 
+    // Utilizamos el metodo DBConnection verificando su conexion anteriormente
     private Connection obtener() throws SQLException {
-        return DriverManager.getConnection(DBConnection.URL, DBConnection.USER_NAME, DBConnection.PASSWORD);
+        // Utilizamos el metodo DBConnection verificando su conexion anteriormente
+        return DriverManager.getConnection(
+                DBConnection.URL,
+                DBConnection.USER_NAME,
+                DBConnection.PASSWORD);
     }
 }

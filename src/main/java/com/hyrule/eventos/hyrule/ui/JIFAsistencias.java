@@ -8,6 +8,9 @@ import com.hyrule.eventos.hyrule.servicio.AsistenciaService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyVetoException;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -63,6 +66,24 @@ public class JIFAsistencias extends JInternalFrame {
                 log("Asistencia registrada.");
             } else {
                 log("No se registró (valide estado/cupo/duplicado).");
+            }
+        });
+
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
             }
         });
     }

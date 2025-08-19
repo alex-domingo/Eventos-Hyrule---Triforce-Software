@@ -12,10 +12,10 @@ import java.time.LocalTime;
  */
 public class Actividad {
 
-    private String codigo;          // PK: ACT-00000001
-    private String codigoEvento;    // FK evento
-    private String tipo;            // 'charla','taller','debate','otra'
-    private String titulo;
+    private String codigo; // PK: ACT-00000001
+    private String codigoEvento; // FK evento
+    private String tipo; // Tipo de actividad: Charla, taller, debate u otra
+    private String titulo; // <= 200
     private String correoInstructor; // FK participante
     private LocalTime horaInicio;
     private LocalTime horaFin;
@@ -36,6 +36,7 @@ public class Actividad {
         this.cupo = cupo;
     }
 
+    // Getters y setters
     public String getCodigo() {
         return codigo;
     }

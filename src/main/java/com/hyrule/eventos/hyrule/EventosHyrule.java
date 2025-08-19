@@ -17,6 +17,7 @@ public class EventosHyrule {
         DBConnection connection = new DBConnection();
         connection.connect();
 
+        // Llamamos a VentanaPrincipal para iniciar directamente la interfaz grafica
         SwingUtilities.invokeLater(() -> new com.hyrule.eventos.hyrule.ui.VentanaPrincipal().setVisible(true));
     }
 }

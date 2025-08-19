@@ -43,7 +43,7 @@ public class EventoDAO {
         }
     }
 
-    // READ (por codigo)
+    // READ (obtenener evento por codigo)
     public Evento obtenerPorCodigo(String codigo) {
         String sql = "SELECT codigo, fecha_evento, tipo, titulo, lugar, cupo, tarifa "
                 + "FROM evento WHERE codigo = ?";
@@ -60,7 +60,7 @@ public class EventoDAO {
         return null;
     }
 
-    // READ (listar todos)
+    // READ (listar todos los eventos)
     public List<Evento> listar() {
         String sql = "SELECT codigo, fecha_evento, tipo, titulo, lugar, cupo, tarifa FROM evento ORDER BY codigo";
         List<Evento> lista = new ArrayList<>();
