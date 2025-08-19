@@ -8,7 +8,6 @@ import com.hyrule.eventos.hyrule.dbconnection.DBConnection;
 import com.hyrule.eventos.hyrule.modelo.Inscripcion;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class InscripcionDAO {
         }
     }
 
-    // READ (por PK)
+    // READ (listar inscripcion por correo (PK))
     public Inscripcion obtener(String correo, String codigoEvento) {
         final String sql = "SELECT correo, codigo_evento, tipo, estado, creado_en "
                 + "FROM inscripcion WHERE correo=? AND codigo_evento=?";
@@ -51,7 +50,7 @@ public class InscripcionDAO {
         return null;
     }
 
-    // READ (listar por evento)
+    // READ (listar inscripciones por evento)
     public List<Inscripcion> listarPorEvento(String codigoEvento) {
         final String sql = "SELECT correo, codigo_evento, tipo, estado, creado_en "
                 + "FROM inscripcion WHERE codigo_evento=? ORDER BY correo";
@@ -69,7 +68,7 @@ public class InscripcionDAO {
         return lista;
     }
 
-    // READ (listar por correo)
+    // READ (listar inscripciones por correo)
     public List<Inscripcion> listarPorCorreo(String correo) {
         final String sql = "SELECT correo, codigo_evento, tipo, estado, creado_en "
                 + "FROM inscripcion WHERE correo=? ORDER BY codigo_evento";
@@ -109,7 +108,7 @@ public class InscripcionDAO {
             ps.setString(2, codigoEvento);
             return ps.executeUpdate() == 1;
         } catch (SQLException ex) {
-            // Si existen pagos o asistencias relacionadas, MySQL impedirá borrar por FKs
+            // Si existen pagos o asistencias relacionadas, MySQL impedira borrar por FKs
             System.err.println("Error eliminar inscripcion: " + ex.getMessage());
             return false;
         }
@@ -129,6 +128,7 @@ public class InscripcionDAO {
         }
     }
 
+    // Obtenemos el cupo maximo definido para un evento especifico
     public int obtenerCupoEvento(String codigoEvento) {
         final String sql = "SELECT cupo FROM evento WHERE codigo=?";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -142,6 +142,7 @@ public class InscripcionDAO {
         }
     }
 
+    // Obtenemos la tarifa definida para un evento especifico
     public double obtenerTarifaEvento(String codigoEvento) {
         final String sql = "SELECT tarifa FROM evento WHERE codigo=?";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -155,6 +156,7 @@ public class InscripcionDAO {
         }
     }
 
+    // Suma el total de pagos realizados por un usuario en un evento especifico
     public double sumarPagosInscripcion(String correo, String codigoEvento) {
         final String sql = "SELECT COALESCE(SUM(monto),0) FROM pago WHERE correo=? AND codigo_evento=?";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {

@@ -20,7 +20,7 @@ public class ReporteParticipantesService {
 
     /*
     Generamos un HTML con los participantes de un evento. Filtros opcionales:
-    tipo_participante (estudiante,profesional,invitado) e institucion (procedencia)
+    tipo de participante (estudiante, profesional o invitado) e institucion (procedencia)
      */
     public File generar(String codigoEvento, String tipoParticipante, String institucionLike) {
         StringBuilder cuerpo = new StringBuilder();

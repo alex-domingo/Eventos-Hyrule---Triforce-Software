@@ -19,7 +19,8 @@ public class InscripcionService {
     private final InscripcionDAO dao = new InscripcionDAO();
 
     public boolean validarInscripcion(String correo, String codigoEvento) {
-        // 1) Cargar inscripción
+        
+        // Cargamos la inscripcion
         Inscripcion ins = dao.obtener(correo, codigoEvento);
         if (ins == null) {
             System.err.println("Inscripcion no existe.");
@@ -30,7 +31,7 @@ public class InscripcionService {
             return false;
         }
 
-        // 2) Reglas de pago y cupo
+        // Reglas de pago y cupo
         double tarifa = dao.obtenerTarifaEvento(codigoEvento);
         double totalPagado = dao.sumarPagosInscripcion(correo, codigoEvento);
         if (tarifa > 0 && totalPagado < tarifa) {
@@ -45,7 +46,7 @@ public class InscripcionService {
             return false;
         }
 
-        // 3) Transaccion para actualizar estado
+        // Transaccion para actualizar estado
         try (Connection cn = DriverManager.getConnection(DBConnection.URL, DBConnection.USER_NAME, DBConnection.PASSWORD)) {
             cn.setAutoCommit(false);
             try (PreparedStatement ps = cn.prepareStatement(

@@ -11,6 +11,9 @@ import com.hyrule.eventos.hyrule.servicio.InscripcionService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.beans.PropertyVetoException;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -93,6 +96,24 @@ public class JIFInscripciones extends JInternalFrame {
         });
 
         cargarPorEvento();
+
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+        });
     }
 
     private void addRow(JPanel form, GridBagConstraints gc, int y, String label, JComponent comp) {

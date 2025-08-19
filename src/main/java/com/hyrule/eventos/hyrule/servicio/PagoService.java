@@ -19,10 +19,10 @@ public class PagoService {
     private final InscripcionService insService = new InscripcionService();
 
     /*
-    Registra un pago SOLO si existe inscripcion en estado "pendiente",
-    si hay cupo disponible para validar y el monto es EXACTAMENTE lo que falta
-    para cubrir la tarifa Si todo va bien, registra el pago y valida la
-    inscripcion.
+    Registramos un pago solo si existe inscripcion en estado "pendiente",
+    si hay cupo disponible para validar y el monto es exactamente lo que falta
+    para cubrir la tarifa, si todo va bien, registra el pago y valida la
+    inscripcion
      */
     public ResultadoPago registrarPagoExacto(String correo, String codigoEvento, String metodo, double monto) {
         var ins = insDAO.obtener(correo, codigoEvento);
@@ -58,20 +58,25 @@ public class PagoService {
         if (restante <= 0.0) {
             return new ResultadoPago(false, "La inscripción ya está totalmente cubierta. No se requiere pago.");
         }
+
         // Notificamos exactamente el monto que se debe pagar, ni mas ni menos
         if (Math.abs(monto - restante) >= 0.01) {
             return new ResultadoPago(false, "Monto incorrecto. Debe pagar exactamente Q" + String.format("%.2f", restante) + ".");
         }
 
+        // De no existir evento, participante o inscripcion, no registramos el pago
         boolean okPago = pagoDAO.crear(new Pago(correo, codigoEvento, metodo, monto));
         if (!okPago) {
             return new ResultadoPago(false, "No se pudo registrar el pago.");
         }
 
+        // Si la transaccion es exitosa entonces validamos inscripcion (actualizamos estado de inscripcion) 
         boolean validada = insService.validarInscripcion(correo, codigoEvento);
         if (validada) {
             return new ResultadoPago(true, "Pago recibido. ¡Inscripción validada!");
         }
+
+        // Manejamos validacion en caso de que no se actualice el estado de inscripcion o el cupo este completamente lleno
         return new ResultadoPago(true, "Pago recibido, pero no se pudo validar en este momento (cupo o estado). Intente de nuevo.");
     }
 

@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
  */
 public class Pago {
 
-    private Long id;              // AUTO_INCREMENT
-    private String correo;        // FK participante
-    private String codigoEvento;  // FK evento
-    private String metodo;        // 'efectivo','transferencia','tarjeta'
-    private double monto;         // > 0
+    private Long id; // AUTO_INCREMENT
+    private String correo; // FK participante
+    private String codigoEvento; // FK evento
+    private String metodo; // Metodo de pago: efectivo, transferencia o tarjeta
+    private double monto; // >= 0
     private LocalDateTime creadoEn;
 
     public Pago() {
@@ -29,6 +29,7 @@ public class Pago {
         this.monto = monto;
     }
 
+    // Getters y setters
     public Long getId() {
         return id;
     }

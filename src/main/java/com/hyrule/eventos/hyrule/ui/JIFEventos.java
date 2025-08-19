@@ -10,7 +10,10 @@ import com.hyrule.eventos.hyrule.modelo.Evento;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.beans.PropertyVetoException;
 import java.time.LocalDate;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -19,7 +22,7 @@ import java.time.LocalDate;
 public class JIFEventos extends JInternalFrame {
 
     private final JTextField txtCodigo = new JTextField(12);
-    private final JTextField txtFecha = new JTextField(10); // yyyy-MM-dd
+    private final JTextField txtFecha = new JTextField(10);
     private final JComboBox<String> cboTipo = new JComboBox<>(new String[]{"charla", "congreso", "taller", "debate"});
     private final JTextField txtTitulo = new JTextField(30);
     private final JTextField txtLugar = new JTextField(25);
@@ -100,6 +103,24 @@ public class JIFEventos extends JInternalFrame {
         });
 
         cargarTabla();
+
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+        });
     }
 
     private void addRow(JPanel form, GridBagConstraints gc, int y, String label, JComponent comp) {
@@ -212,7 +233,7 @@ public class JIFEventos extends JInternalFrame {
 
         Evento e = new Evento();
         e.setCodigo(codigo);
-        e.setFechaEvento(LocalDate.parse(fecha)); // yyyy-MM-dd
+        e.setFechaEvento(LocalDate.parse(fecha));
         e.setTipo(tipo);
         e.setTitulo(titulo);
         e.setLugar(lugar);

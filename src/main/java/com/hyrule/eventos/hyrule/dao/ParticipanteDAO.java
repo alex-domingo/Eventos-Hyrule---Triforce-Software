@@ -32,7 +32,7 @@ public class ParticipanteDAO {
         }
     }
 
-    // READ (por correo (PK))
+    // READ (listar participante por correo (PK))
     public Participante obtenerPorCorreo(String correo) {
         final String sql = "SELECT correo, nombre_completo, tipo, institucion FROM participante WHERE correo = ?";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -48,7 +48,7 @@ public class ParticipanteDAO {
         return null;
     }
 
-    // READ (lo hace por nombre)
+    // READ (listar participante por nombre)
     public List<Participante> buscarPorNombreLike(String termino) {
         final String sql = "SELECT correo, nombre_completo, tipo, institucion "
                 + "FROM participante WHERE nombre_completo LIKE ? ORDER BY nombre_completo";
@@ -66,7 +66,7 @@ public class ParticipanteDAO {
         return lista;
     }
 
-    // READ (listar todos)
+    // READ (listar todos los participantes)
     public List<Participante> listar() {
         final String sql = "SELECT correo, nombre_completo, tipo, institucion FROM participante ORDER BY nombre_completo";
         List<Participante> lista = new ArrayList<>();

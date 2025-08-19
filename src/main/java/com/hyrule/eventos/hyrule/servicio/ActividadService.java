@@ -19,7 +19,8 @@ public class ActividadService {
     private final ActividadDAO actividadDAO = new ActividadDAO();
 
     public boolean crearConValidacion(Actividad a) {
-        // Verificamos que instructor este inscrito al evento y no como 'asistente'
+
+        // Verificamos que instructor este inscrito al evento y no como asistente
         final String sql = "SELECT tipo FROM inscripcion WHERE correo=? AND codigo_evento=? LIMIT 1";
         try (Connection cn = DriverManager.getConnection(DBConnection.URL, DBConnection.USER_NAME, DBConnection.PASSWORD); PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, a.getCorreoInstructor());

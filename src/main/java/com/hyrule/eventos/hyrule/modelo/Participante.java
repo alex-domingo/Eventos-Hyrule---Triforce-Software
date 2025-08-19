@@ -10,10 +10,10 @@ package com.hyrule.eventos.hyrule.modelo;
  */
 public class Participante {
 
-    private String correo;          // PK
-    private String nombreCompleto;  // <= 60
-    private String tipo;            // 'estudiante','profesional','invitado'
-    private String institucion;     // <= 150
+    private String correo; // PK
+    private String nombreCompleto; // <= 45
+    private String tipo; // Tipo: estudiante, profesional o invitado
+    private String institucion; // <= 150
 
     public Participante() {
     }
@@ -25,6 +25,7 @@ public class Participante {
         this.institucion = institucion;
     }
 
+    // Getters y setters
     public String getCorreo() {
         return correo;
     }

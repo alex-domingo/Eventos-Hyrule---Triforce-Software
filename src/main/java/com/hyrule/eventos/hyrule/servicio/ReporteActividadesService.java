@@ -20,7 +20,7 @@ public class ReporteActividadesService {
 
     /*
     Lista de actividades de un evento con su conteo de asistencias. Filtros
-    opcionales: tipo_actividad (charla,taller,debate,otra) y correo_instructor
+    opcionales: tipo de actividad (charla, taller, debate u otra) y correo de instructor
      */
     public File generar(String codigoEvento, String tipoActividad, String correoInstructorLike) {
         StringBuilder cuerpo = new StringBuilder();

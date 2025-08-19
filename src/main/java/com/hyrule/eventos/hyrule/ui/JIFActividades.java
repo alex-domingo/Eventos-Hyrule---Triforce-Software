@@ -9,7 +9,10 @@ import com.hyrule.eventos.hyrule.servicio.ActividadService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyVetoException;
 import java.time.LocalTime;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -76,6 +79,24 @@ public class JIFActividades extends JInternalFrame {
                 }
             } catch (Exception ex) {
                 alerta(ex.getMessage());
+            }
+        });
+
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
             }
         });
     }

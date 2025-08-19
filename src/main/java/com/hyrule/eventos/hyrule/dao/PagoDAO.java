@@ -8,7 +8,6 @@ import com.hyrule.eventos.hyrule.dbconnection.DBConnection;
 import com.hyrule.eventos.hyrule.modelo.Pago;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import java.util.List;
  */
 public class PagoDAO {
 
+    // CREATE
     public boolean crear(Pago p) {
         final String sql = "INSERT INTO pago (correo, codigo_evento, metodo, monto) VALUES (?, ?, ?, ?)";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -40,6 +40,7 @@ public class PagoDAO {
         return false;
     }
 
+    // Listamos todos los pagos por correo (usuario) y codigo (evento)
     public List<Pago> listarPorInscripcion(String correo, String codigoEvento) {
         final String sql = "SELECT id, correo, codigo_evento, metodo, monto, creado_en "
                 + "FROM pago WHERE correo=? AND codigo_evento=? ORDER BY creado_en";
@@ -58,6 +59,7 @@ public class PagoDAO {
         return lista;
     }
 
+    // Calculamos el total pagado por un usuario en un evento especifico
     public double totalPagado(String correo, String codigoEvento) {
         final String sql = "SELECT COALESCE(SUM(monto),0) FROM pago WHERE correo=? AND codigo_evento=?";
         try (Connection cn = obtener(); PreparedStatement ps = cn.prepareStatement(sql)) {
@@ -86,7 +88,13 @@ public class PagoDAO {
         return p;
     }
 
+    // Realizamos las consultas a nuestra base de datos "eventos_hyrule"
     private Connection obtener() throws SQLException {
-        return DriverManager.getConnection(DBConnection.URL, DBConnection.USER_NAME, DBConnection.PASSWORD);
+
+        // Utilizamos el metodo DBConnection verificando su conexion anteriormente
+        return DriverManager.getConnection(
+                DBConnection.URL,
+                DBConnection.USER_NAME,
+                DBConnection.PASSWORD);
     }
 }

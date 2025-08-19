@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
  */
 public class Inscripcion {
 
-    private String correo;          // PK (FK a participante)
-    private String codigoEvento;    // PK (FK a evento)
-    private String tipo;            // 'asistente','conferencista','tallerista','otro'
-    private String estado;          // 'pendiente','validada','anulada'
-    private LocalDateTime creadoEn; // timestamp
+    private String correo; // PK (FK a participante)
+    private String codigoEvento; // PK (FK a evento)
+    private String tipo; // Tipo: asistente, conferencista, tallerista u otro
+    private String estado; // Estado de inscripcion: pendiente, validada o anulada
+    private LocalDateTime creadoEn;
 
     public Inscripcion() {
     }
@@ -28,6 +28,7 @@ public class Inscripcion {
         this.estado = estado;
     }
 
+    // Getters y setters
     public String getCorreo() {
         return correo;
     }

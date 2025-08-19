@@ -17,9 +17,9 @@ public class VentanaPrincipal extends JFrame {
     private final JDesktopPane desktop = new JDesktopPane();
 
     public VentanaPrincipal() {
-        setTitle("Eventos Hyrule — Backend Demo");
+        setTitle("Eventos Hyrule");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1100, 700);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         add(desktop, BorderLayout.CENTER);

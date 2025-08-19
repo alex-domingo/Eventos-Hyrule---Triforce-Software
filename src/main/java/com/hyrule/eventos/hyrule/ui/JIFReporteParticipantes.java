@@ -8,7 +8,10 @@ import com.hyrule.eventos.hyrule.servicio.ReporteParticipantesService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyVetoException;
 import java.io.File;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -49,6 +52,24 @@ public class JIFReporteParticipantes extends JInternalFrame {
                 txtLog.append("OK -> " + f.getAbsolutePath() + "\n");
             } catch (Exception ex) {
                 txtLog.append("Error: " + ex.getMessage() + "\n");
+            }
+        });
+
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                try {
+                    setMaximum(true);
+                } catch (PropertyVetoException ignored) {
+                }
             }
         });
     }
